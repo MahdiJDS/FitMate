@@ -2,150 +2,164 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <title>MBI</title>
-</head>
-
-<style>
-    .show {
-        display: inline-block;
-        opacity: 1;
-        transition: all 1s ease;
-        animation: anime 1s ease;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBI - FitMate</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    body,
+    html {
+      height: 100%;
+      background-color: #212529;
+      color: #212529;
     }
 
-    .hidden {
-        display: none;
-        opacity: 0;
+    section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .card {
+      background-color: #f8f9fa;
+    }
+
+    .result-card {
+      position: relative;
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+
+    #btnX {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 10;
+    }
+
+    .result-value {
+      background-color: #dc3545;
+      color: white;
+      border-radius: 1rem;
+      padding: 30px;
+      max-width: 200px;
+      margin: 20px auto;
+      font-weight: bold;
+      font-size: 2rem;
     }
 
     @keyframes anime {
-        0% {
-            transform: rotateY(90deg);
-        }
+      0% {
+        transform: rotateY(90deg);
+      }
 
-        100% {
-            transform: rotateY(0);
-        }
+      100% {
+        transform: rotateY(0);
+      }
     }
-</style>
+
+    .show {
+      display: block !important;
+      opacity: 1;
+      transition: all 1s ease;
+      animation: anime 1s ease;
+    }
+
+    .hidden {
+      display: none !important;
+      opacity: 0;
+    }
+  </style>
+</head>
 
 <body>
-    <section class="bg-dark vh-100 justify-content-center align-content-center text-center ">
-        <div class="container w-50">
-            <div class="row justify-content-center">
-                <div class="col-md-12 c1 show">
-                    <div class="card shadow bg-dark-subtle ">
-                        <div class="card-body ">
-                            <form>
-                                <div class="my-3">
-                                    <h2>شاخص توده بدنی</h2>
-                                </div>
-                                <div class="d-flex justify-content-center my-5">
-                                    <input type="text" class="form-control w-50" id="gad">
-                                    <label for="Gad" class="form-label mx-5"> :قد (سانتی متر)</label>
-                                </div>
-                                <div class="d-flex justify-content-center my-5">
-                                    <input type="text" class="form-control w-50" id="vazn">
-                                    <label for="Vazn" class="mx-5">:وزن (کیلوگرم)</label>
-                                </div>
-                                <button class="btn btn-success col-12">محاسبه</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 c2 hidden">
-                <div class="card bg-dark-subtle d-flex justify-content-center  align-items-center position-relative">
-                    <div class="">
-                        <button class="btn btn-outline-danger position-absolute start-0" id="btnX">X</button>
-                    </div>
-                    <div class="text-center rounded-5 bg-danger p-5 w-25 my-5">
-                        <h2 id="mbi">20.4</h2>
-                    </div>
-                    <div class="text-center my-3 ">
-                        <h5 id="mbiA">سالم</h5>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+  <section>
+    <div class="container">
+      <div class="row justify-content-center">
+        <!-- Main form -->
+        <div class="col-12 col-md-6 col-lg-5 c1 show">
+          <div class="card shadow p-4">
+            <h2 class="mb-4">Body Mass Index</h2>
+            <form>
+              <div class="mb-3 text-start">
+                <label for="gad" class="form-label">Height (cm):</label>
+                <input type="number" class="form-control" id="gad" placeholder="Enter your height" />
+              </div>
+              <div class="mb-3 text-start">
+                <label for="vazn" class="form-label">Weight (kg):</label>
+                <input type="number" class="form-control" id="vazn" placeholder="Enter your weight" />
+              </div>
+              <button type="submit" class="btn btn-success w-100">Calculate</button>
+            </form>
+          </div>
         </div>
 
-    </section>
+        <!-- Result -->
+        <div class="col-12 col-md-6 col-lg-5 c2 hidden">
+          <div class="card shadow result-card p-4">
+            <button id="btnX" class="btn btn-outline-danger">X</button>
+            <div class="result-value" id="mbi">20.4</div>
+            <h5 id="mbiA">Healthy</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const c1 = document.querySelector('.c1');
+    const c2 = document.querySelector('.c2');
+    const btn = document.querySelector('button[type="submit"]');
+    const mbiNumber = document.getElementById('mbi');
+    const mbiText = document.getElementById('mbiA');
+    const btnX = document.getElementById('btnX');
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
+    btn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const gad = Number(document.getElementById('gad').value);
+      const vazn = Number(document.getElementById('vazn').value);
 
+      if (!gad || !vazn || gad <= 0 || vazn <= 0) {
+        alert("Please enter valid input values");
+        return;
+      }
 
+      const mbi = (vazn / (gad * gad)) * 10000;
+      const mbiFinal = Number(mbi.toFixed(2));
 
-    <script>
+      mbiNumber.textContent = mbiFinal;
 
-        const c1 = document.querySelector('.c1');
-        const c2 = document.querySelector('.c2');
-        const btn = document.querySelector('button');
-        console.log(btn);
-        btn.addEventListener('click', (even) => {
-            even.preventDefault();
-            const gad = document.getElementById('gad').value;
-            console.log(gad)
-            const vazn = document.getElementById('vazn').value;
-            console.log(vazn);
-            const mbiNumber = document.getElementById('mbi');
-            const mbiText = document.getElementById('mbiA');
+      if (mbiFinal < 18.5) {
+        mbiText.textContent = "Underweight";
+      } else if (mbiFinal >= 18.5 && mbiFinal <= 24.9) {
+        mbiText.textContent = "Normal weight";
+      } else if (mbiFinal > 24.9 && mbiFinal <= 29.9) {
+        mbiText.textContent = "Overweight";
+      } else {
+        mbiText.textContent = "Obesity";
+      }
 
+      swich();
+    });
 
+    btnX.addEventListener('click', () => {
+      swich();
+      document.getElementById('gad').value = '';
+      document.getElementById('vazn').value = '';
+    });
 
-            const gadT2 = gad ** 2;
-            const mbi = (vazn / gadT2) * 10000;
-            const mbiFinal = Number(mbi.toFixed(2));
-
-            if (gad && vazn) {
-
-                swich();
-                mbiNumber.textContent = mbiFinal;
-                if (mbiFinal < 18.5) {
-                    mbiText.textContent = "کمبود وزن";
-                } else if (mbiFinal >= 18.5 && mbiFinal <= 24.5) {
-                    mbiText.textContent = "وزن مناسب";
-                } else if (mbiFinal > 24.5 && mbiFinal <= 29.9) {
-                    mbiText.textContent = "اضافه وزن";
-                } else if (mbiFinal > 30) {
-                    mbiText.textContent = "چاقی";
-                }
-
-
-            }
-            else {
-                alert("فیلد وردی را تکمیل نمایید")
-            }
-
-
-
-        });
-
-        const btnX = document.getElementById('btnX');
-        btnX.addEventListener('click', () => {
-            swich();
-            document.getElementById('gad').value = '';
-            document.getElementById('vazn').value = '';
-
-        });
-
-        function swich() {
-            c1.classList.toggle('hidden');
-            c1.classList.toggle('show');
-            c2.classList.toggle('hidden');
-            c2.classList.toggle('show');
-
-        }
-
-    </script>
+    function swich() {
+      c1.classList.toggle('hidden');
+      c1.classList.toggle('show');
+      c2.classList.toggle('hidden');
+      c2.classList.toggle('show');
+    }
+  </script>
 </body>
 
 </html>
